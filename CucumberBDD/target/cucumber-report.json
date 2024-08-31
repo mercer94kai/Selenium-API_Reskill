@@ -1,0 +1,351 @@
+[
+  {
+    "line": 1,
+    "elements": [
+      {
+        "start_timestamp": "2020-06-22T09:42:06.322Z",
+        "line": 3,
+        "name": "login to php valid scenario",
+        "description": "",
+        "id": "login-to-php-travels-feature;login-to-php-valid-scenario",
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 25488000000,
+              "status": "passed"
+            },
+            "line": 4,
+            "name": "user is already on login page",
+            "match": {
+              "location": "stepdefintions.LoginStepDefinitions.user_is_already_on_login_page()"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 40000000,
+              "status": "passed"
+            },
+            "line": 5,
+            "name": "title of login page is login",
+            "match": {
+              "location": "stepdefintions.LoginStepDefinitions.title_of_login_page_is_login()"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 1180000000,
+              "status": "passed"
+            },
+            "line": 6,
+            "name": "user enters \"user@phptravels.com\" and \"demouser\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "\"user@phptravels.com\"",
+                  "offset": 12
+                },
+                {
+                  "val": "\"demouser\"",
+                  "offset": 38
+                }
+              ],
+              "location": "stepdefintions.LoginStepDefinitions.user_enters_username_and_password(java.lang.String,java.lang.String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 393000000,
+              "status": "passed"
+            },
+            "line": 7,
+            "name": "user clicks on Login button",
+            "match": {
+              "location": "stepdefintions.LoginStepDefinitions.user_clicks_on_Login_button()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 2532000000,
+              "status": "passed"
+            },
+            "line": 8,
+            "name": "User is on home page",
+            "match": {
+              "location": "stepdefintions.LoginStepDefinitions.user_is_on_home_page()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 262000000,
+              "status": "passed"
+            },
+            "line": 9,
+            "name": "user closes browser",
+            "match": {
+              "location": "stepdefintions.LoginStepDefinitions.user_closes_browser()"
+            },
+            "keyword": "And "
+          }
+        ]
+      },
+      {
+        "start_timestamp": "2020-06-22T09:42:36.407Z",
+        "line": 11,
+        "name": "login to php invalid scenario",
+        "description": "",
+        "id": "login-to-php-travels-feature;login-to-php-invalid-scenario",
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 23502000000,
+              "status": "passed"
+            },
+            "line": 12,
+            "name": "user is already on login page",
+            "match": {
+              "location": "stepdefintions.LoginStepDefinitions.user_is_already_on_login_page()"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 23000000,
+              "status": "passed"
+            },
+            "line": 13,
+            "name": "title of login page is login",
+            "match": {
+              "location": "stepdefintions.LoginStepDefinitions.title_of_login_page_is_login()"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 843000000,
+              "status": "passed"
+            },
+            "line": 14,
+            "name": "user enters \"testuser\" and \"demouser\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "\"testuser\"",
+                  "offset": 12
+                },
+                {
+                  "val": "\"demouser\"",
+                  "offset": 27
+                }
+              ],
+              "location": "stepdefintions.LoginStepDefinitions.user_enters_username_and_password(java.lang.String,java.lang.String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 484000000,
+              "status": "passed"
+            },
+            "line": 15,
+            "name": "user clicks on Login button",
+            "match": {
+              "location": "stepdefintions.LoginStepDefinitions.user_clicks_on_Login_button()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 1279000000,
+              "status": "passed"
+            },
+            "line": 16,
+            "name": "login error is displayed",
+            "match": {
+              "location": "stepdefintions.LoginStepDefinitions.login_error_is_displayed()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 1048000000,
+              "status": "passed"
+            },
+            "line": 17,
+            "name": "User is not on home page",
+            "match": {
+              "location": "stepdefintions.LoginStepDefinitions.user_is_not_on_home_page()"
+            },
+            "keyword": "But "
+          },
+          {
+            "result": {
+              "duration": 231000000,
+              "status": "passed"
+            },
+            "line": 18,
+            "name": "user closes browser",
+            "match": {
+              "location": "stepdefintions.LoginStepDefinitions.user_closes_browser()"
+            },
+            "keyword": "And "
+          }
+        ]
+      },
+      {
+        "start_timestamp": "2020-06-22T09:43:03.842Z",
+        "line": 20,
+        "name": "Verify My Account page functionalities",
+        "description": "",
+        "id": "login-to-php-travels-feature;verify-my-account-page-functionalities",
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 33497000000,
+              "status": "passed"
+            },
+            "line": 21,
+            "name": "user is already on login page",
+            "match": {
+              "location": "stepdefintions.LoginStepDefinitions.user_is_already_on_login_page()"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 22000000,
+              "status": "passed"
+            },
+            "line": 22,
+            "name": "title of login page is login",
+            "match": {
+              "location": "stepdefintions.LoginStepDefinitions.title_of_login_page_is_login()"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 1082000000,
+              "status": "passed"
+            },
+            "line": 23,
+            "name": "user enters \"user@phptravels.com\" and \"demouser\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "\"user@phptravels.com\"",
+                  "offset": 12
+                },
+                {
+                  "val": "\"demouser\"",
+                  "offset": 38
+                }
+              ],
+              "location": "stepdefintions.LoginStepDefinitions.user_enters_username_and_password(java.lang.String,java.lang.String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 400000000,
+              "status": "passed"
+            },
+            "line": 24,
+            "name": "user clicks on Login button",
+            "match": {
+              "location": "stepdefintions.LoginStepDefinitions.user_clicks_on_Login_button()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 2887000000,
+              "status": "passed"
+            },
+            "line": 25,
+            "name": "User is on home page",
+            "match": {
+              "location": "stepdefintions.LoginStepDefinitions.user_is_on_home_page()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 3539000000,
+              "status": "passed"
+            },
+            "line": 26,
+            "name": "User clicks on currency dropdown and select INR",
+            "match": {
+              "location": "stepdefintions.LoginStepDefinitions.user_clicks_on_currency_dropdown_and_select_INR()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 1289000000,
+              "status": "passed"
+            },
+            "line": 27,
+            "name": "User verifies date displayed is currentdate",
+            "match": {
+              "location": "stepdefintions.LoginStepDefinitions.user_verifies_date_displayed_is_currentdate()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 2234000000,
+              "status": "passed"
+            },
+            "line": 28,
+            "name": "User  clicks on \"NEWSLETTER\" link",
+            "match": {
+              "arguments": [
+                {
+                  "val": "\"NEWSLETTER\"",
+                  "offset": 16
+                }
+              ],
+              "location": "stepdefintions.LoginStepDefinitions.user_clicks_on_link(java.lang.String)"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 307000000,
+              "status": "passed"
+            },
+            "line": 29,
+            "name": "user closes browser",
+            "match": {
+              "location": "stepdefintions.LoginStepDefinitions.user_closes_browser()"
+            },
+            "keyword": "And "
+          }
+        ],
+        "tags": [
+          {
+            "name": "@Mytest"
+          }
+        ]
+      }
+    ],
+    "name": "login to PHP travels feature",
+    "description": "",
+    "id": "login-to-php-travels-feature",
+    "keyword": "Feature",
+    "uri": "file:src/test/resources/features/PHP%20Login.feature",
+    "tags": []
+  }
+]

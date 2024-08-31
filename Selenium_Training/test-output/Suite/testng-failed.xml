@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite guice-stage="DEVELOPMENT" name="Failed suite [Suite]" parallel="tests">
+  <test thread-count="5" name="Test2(failed)" parallel="tests">
+    <parameter name="browserName" value="Firefox"/>
+    <classes>
+      <class name="Assignmnet_3.Testng_cls_2">
+        <methods>
+          <include name="verifyDropdownItem"/>
+          <include name="verifyHLpageIsLoaded"/>
+          <include name="closeBrowser"/>
+          <include name="verifyPageIsLoaded"/>
+          <include name="setupBrowser"/>
+          <include name="verifyWindowMsg"/>
+          <include name="verifyNewWindowTitle"/>
+        </methods>
+      </class> <!-- Assignmnet_3.Testng_cls_2 -->
+    </classes>
+  </test> <!-- Test2(failed) -->
+</suite> <!-- Failed suite [Suite] -->
