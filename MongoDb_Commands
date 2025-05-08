@@ -1,0 +1,396 @@
+NOTE: MongoDb stores data as collection & groups.Mongo db stores data in key-value format , it's called BSON(binary JSON).
+In MongoDb a collection is group of docs and a database is a group of collection.
+
+Mongo Db Commands:
+===================
+1.mongosh => to connect in MongoDb shell
+
+2.show dbs => show active databases
+
+3.use <database_name> => to create a database and connect to it.
+
+4.db.<collection_name>.find() =>to list all the documents/entry in the collection.
+[NOTE: find() by default prints every thing, We need to pass filters to get req val.exmp: db.students.find({name:<name>})]
+
+5.db.<collection_name>.insertOne({<fieldName>:<firldVal>}) => To create a collection and add documents to it.[if the the firld is String then pass it with in ""/'', it also supports int,boolean,arr,nested Doc,float etc.]
+
+6.db.<collection_name>.updateOne({<filtering Criteria},{<firldName>:<fieldVal>})
+[NOTE: in MongoDb they have atomic modifier for advance update operations, such as: $set,$unset,$push,$pull,$exists]
+
+7.db.<collection_name>.updateMany({<firldName>:{$exists:false}},{$set:{<fieldName>:<fieldVal>}}) => update all the fields with <fieldName>:<fieldVal> where <fieldName> doestn't exists in the documents.
+
+8.db.<collection_name>.updateMany({<fieldName>:{$in:["<fieldVal1>","<fieldVal2>"]}},{$set:{<fieldName2>:<fieldVal13>}})
+=> in above query we are updating the fieldName2's value only for multople records which have fieldName values as 'fieldVal1' or 'fieldVal2'.
+
+9.db.<collection_name>.deleteOne(<filtering>) => delete only single record.
+
+10.db.<collection_name>.deleteMany(<filtering>) => delete multiple records. [Exmp:  db.students.deleteMany({email:{$exists:true}})=> delete all the records where email field exists]
+
+11.db.collection.updateOne(
+  { _id: someId },
+  { $max: { fieldName: newValue } }
+)
+=> If newValue > current field value, it updates the field.  If newValue <= current field value, it does nothing.
+
+12. db.students.find({age:{$lt:30}}) => show all the records where age is less than 30.
+
+13. db.students.find({age:{$lte:31}}) => show all the records where age is less than or eqals to 31.
+
+14. db.students.find({gpa:{$lte:3.8, $gt:3.5}}) => show all the records where gpa is less than or eals to 3.8  and greater than 3.5.
+
+15. db.students.find({$and:[{fulltime:true},{age:{$lte:30}}]}) => show all the records where 'fulltime' is true and age <=30.
+
+16. db.students.find({age:{$not:{$gte:27}}}) => show me all the records where age is not >=27. [Another alternative:   db.students.find({age:{$lt:27}})  ]
+
+17.  db.students.find({first_name:"Dante"}).explain("executionStats")  => we can check how many documents it's iterating through to get result
+
+18.  db.students.createIndex({first_name:1}) => Creating a index to find the data faster.
+
+19. db.students.getIndexes() => to get all the indexes db had, by default it will have id .
+
+20. db.students.dropIndex("first_name_1") => to drop index .
+
+21. show collections => show all the collections in db
+
+22. db.createCollection("teachers",{capped:true,size:10000000,max:100},{autoIndexId:false}) => using ythis we are creating a new collection named "teacher" where we use 'capped' to set a max size, 'size' indicating memory in bytes(10 Mb in this case) and 'max' for no of maximum doxuments it can have and 'autoIndexId' is for automatically assigning indexes to objects depending on value(true/false) [ex. (simpler way),  db.createCollection("teachers") ]
+
+23.db.<collection_name>.drop() => to drop a collection
+
+24.db.cars.countDocuments() /  db.cars.find().count() => to count no of Documents/records ; Use second method to apply filtering options.
+
+25.db.cars.find({},{_id:0,model:1}).sort({model:1}) => to sort the data
+
+26. db.cars.find().limit(<int_val>) => it will show only records upto <int_val>
+
+27. db.cars.find().skip(<int_val>)  =>  it will skip first <int_val> documets and then show the rest
+
+
+Operator		Description
+========        =============
+$set				Sets the value of a field.
+$unset			Removes the specified field.
+$rename		Renames a field.
+$inc					Increments a field by a value.
+$mul				Multiplies the value of a field.
+$min				Updates if the specified value is less than the current field value.
+$max				Updates if the specified value is greater than the current field value.
+$currentDate	Sets the field to the current date.
+
+$in				It's commonly used in query filters to find documents where a field's value matches one of several possible values.
+$nin			where a field's value does not matches one of several possible values.
+$ne				Not euqals operator
+$lt				less than
+$lte				less than or equals to
+$gt				greater than
+$gte			greater than or equals to
+
+$and			AND logical operator
+$not			NOT logical operator
+$or				OR logical operator
+$nor			NOR logical operator
+
+(Advance)
+STAGES
+-----------
+$match
+$group
+$project
+$sort
+$limit
+$unwind
+$lookup
+$addFields
+$count
+$skip
+
+FUNCTIONS
+----------------
+$sum
+$avg
+
+OPERRATIONS
+--------------------
+$concat
+$toUpper
+$toLower
+$regexMatch
+$ltrim
+$split
+
+
+POINTS:
+=======
+1. when we use find() method for a component/field it does a linear search in my collection to get the doc.
+
+Ex: db.students.find({name:"Dante"}).explain("executionStats") => if we run this command we will get a list of details, in there if you check 'totalDocsExamined' , you will see it's doing a linear search and going through all the documents.now it's okay if it's 
+less documents or data but in case of huge data this may cause delay.
+
+instead if we use db.students.createIndex({first_name:1}) => we create an idex for name and we can access it very easily. 
+
+In conclusion, Applying index to a field allows us to quick lookup of that field but it takes up more memory and it slows insert, update and remove operations because you have to update binary search tree. So it's recommened to implemet
+indexes if there is lot of searching but not lot of updating.
+
+
+
+AGGREGATE FRAMEWORK:
+========================
+
+I.GROUPING
+------------------
+
+1.  db.cars.aggregate([
+			{$group:{_id:"$maker"}}
+		])
+Output:		
+[		
+	{ _id: 'Mahindra' },
+	{ _id: 'Honda' },
+	{ _id: 'Hyundai' },
+	{ _id: 'Tata' },
+	{ _id: 'Maruti Suzuki' }
+] 
+
+
+2. db.cars,aggregate([
+		{$group: {_id:"$maker", Totalcars: {$sum:1}}}
+	])
+Output:
+[
+  { _id: 'Maruti Suzuki', TotalCars: 3 },
+  { _id: 'Hyundai', TotalCars: 4 },
+  { _id: 'Tata', TotalCars: 3 },
+  { _id: 'Honda', TotalCars: 3 },
+  { _id: 'Mahindra', TotalCars: 1 }
+]
+
+	
+3. db.cars.aggregate([ 
+		{ $group: { _id: "$maker" , AveragePrice:{$avg:"$price"}}}
+	])	
+Output:
+[
+  { _id: 'Maruti Suzuki', AveragePrice: 716666.6666666666 },
+  { _id: 'Hyundai', AveragePrice: 1475000 },
+  { _id: 'Tata', AveragePrice: 1500000 },
+  { _id: 'Honda', AveragePrice: 1000000 },
+  { _id: 'Mahindra', AveragePrice: 1800000 }
+]
+
+
+4. db.cars.aggregate([ 
+		{ $group: { _id: "$fuel_type" , TotalCars:{$sum:1}}}
+	])
+Output:
+[
+  { _id: 'Diesel', TotalCars: 4 },
+  { _id: 'Petrol', TotalCars: 6 },
+  { _id: 'Electric', TotalCars: 2 },
+  { _id: 'CNG', TotalCars: 2 }
+]	
+
+
+
+II.MATCHES
+-----------------
+We use matches becauses we can use multiple stages with Match stage.
+
+1. db.cars.aggregate([
+	{$match:{maker:"Hyundai", "engine.cc":{$gt:1000}}},
+	{$group:{_id:"$maker",Total_Cars:{$sum:1}}}
+	])
+Output:
+[ { _id: 'Hyundai', Total_Cars: 2 } ]
+
+2.  db.cars.aggregate([ {$match:{maker:"Hyundai"}},{$count:"Total_Cars"} ])
+Output:
+[ { Total_Cars: 4 } ]
+
+III.PROJECTS
+-----------------
+
+We use projects as short of projection. It's used for exclude fields,Rename fields,Add new computed fields.
+
+1.db.cars.aggregate([
+	{$match:{maker:"Hyundai"}},
+	{$project:{maker:1,model:1,fuel_type:1,_id:0}}
+	])
+
+Output:
+[
+  { maker: 'Hyundai', model: 'Creta', fuel_type: 'Diesel' },
+  { maker: 'Hyundai', model: 'Venue', fuel_type: 'Petrol' },
+  { maker: 'Hyundai', model: 'i20', fuel_type: 'Petrol' },
+  { maker: 'Hyundai', model: 'Kona Electric', fuel_type: 'Electric' }
+]
+
+IV.SORT
+-----------
+1.  db.cars.aggregate([
+	{$match:{maker:"Hyundai"}},
+	{$project:{maker:1,model:1,fuel_type:1,_id:0}},
+	{$sort:{model:1}}
+	])
+
+Output:
+[
+  { maker: 'Hyundai', model: 'Creta', fuel_type: 'Diesel' },
+  { maker: 'Hyundai', model: 'Kona Electric', fuel_type: 'Electric' },
+  { maker: 'Hyundai', model: 'Venue', fuel_type: 'Petrol' },
+  { maker: 'Hyundai', model: 'i20', fuel_type: 'Petrol' }
+]
+
+V.SORTBYCOUNT
+-----------------------
+1.db.cars.aggregate([
+	{$sortByCount:"$maker"}
+	])
+	
+Output:
+[
+  { _id: 'Hyundai', count: 4 },
+  { _id: 'Tata', count: 3 },
+  { _id: 'Honda', count: 3 },
+  { _id: 'Maruti Suzuki', count: 3 },
+  { _id: 'Mahindra', count: 1 }
+]
+
+VI.UNWIND
+----------------
+It a field has multiple documents/objects we can create separate documents for each depending on filter
+
+1.db.cars.aggregate([ { $unwind: "$owners" }])
+
+VII.OUT
+-----------
+db.cars.aggregate([
+	{$project:{_id:0,Carname:{$concat:["$maker"," ","$model"]}}},
+	{$out:"Hyundai_Cars"}
+	])
+	
+Output:
+
+It will create a separate collection by name 'Hyundai_Cars' under DB.	
+
+========================================
+STRING OPERATORS
+========================================
+#CONCAT
+db.cars.aggregate([
+	{$match:{maker:"Hyundai"}},
+	{$project:{_id:0,CarName:{$concat:["$maker"," ","$model"]}}}
+	])
+
+Output:
+[
+  { CarName: 'Hyundai Creta' },
+  { CarName: 'Hyundai Venue' },
+  { CarName: 'Hyundai i20' },
+  { CarName: 'Hyundai Kona Electric' }
+]	
+
+
+#TOUPPER	
+1.db.cars.aggregate([
+	{$match:{maker:"Hyundai"}},
+	{$project:{_id:0,model:{$toUpper:"$model"}}}
+	])
+Output:
+[
+  { model: 'CRETA' },
+  { model: 'VENUE' },
+  { model: 'I20' },
+  { model: 'KONA ELECTRIC' }
+]	
+
+2.db.cars.aggregate([
+	{$match:{maker:"Hyundai"}},
+	{$project:{_id:0,CarName:{$toUpper:{$concat:["$maker"," ","$model"]}}}}
+	])
+Output:
+[
+  { CarName: 'HYUNDAI CRETA' },
+  { CarName: 'HYUNDAI VENUE' },
+  { CarName: 'HYUNDAI I20' },
+  { CarName: 'HYUNDAI KONA ELECTRIC' }
+]
+
+#REGEX
+-----------
+db.cars.aggregate([
+	{$project:{_id:0,model:1,
+					is_diesel:{$regexMatch:{input:"$fuel_type",regex:"Die"}}}}
+	])
+Output:
+[
+  { model: 'Creta', is_diesel: true },
+  { model: 'Baleno', is_diesel: false },
+  { model: 'XUV500', is_diesel: true },
+  { model: 'City', is_diesel: false },
+  { model: 'Nexon', is_diesel: false },
+  { model: 'Venue', is_diesel: false },
+  { model: 'i20', is_diesel: false },
+  { model: 'Swift', is_diesel: false },
+  { model: 'Harrier', is_diesel: true },
+  { model: 'Amaze', is_diesel: true },
+  { model: 'Nexon EV', is_diesel: false },
+  { model: 'Kona Electric', is_diesel: false },
+  { model: 'WagonR', is_diesel: false },
+  { model: 'Amaze', is_diesel: false }
+]
+
+========================================
+ARITHMETIC OPERATORS
+========================================
+#ADD
+--------
+Q. Print all the cars model and price with hike of 55000.
+
+db.cars.aggregate([
+	{$project:{_id:0,model:1,
+	price:{$add:["$price",55000]}}}
+	])
+
+Output:
+-----------
+[
+  { model: 'Creta', price: 1555000 },
+  { model: 'Baleno', price: 855000 },
+  { model: 'XUV500', price: 1855000 },
+  { model: 'City', price: 1255000 },
+  { model: 'Nexon', price: 1155000 },
+  { model: 'Venue', price: 1255000 },
+  { model: 'i20', price: 955000 },
+  { model: 'Swift', price: 805000 },
+  { model: 'Harrier', price: 2055000 },
+  { model: 'Amaze', price: 1055000 },
+  { model: 'Nexon EV', price: 1455000 },
+  { model: 'Kona Electric', price: 2355000 },
+  { model: 'WagonR', price: 655000 },
+  { model: 'Amaze', price: 855000 }
+]	
+	
+Q. 
+
+db.cars.aggregate([
+	{$project:{_id:0,model:1,price:1}},
+	{$set:{price_in_Lakhs:
+	{$round:[{$divide:["$price",90000]},1]}}}
+	])
+Output:
+
+[
+  { model: 'Creta', price: 1500000, price_in_Lakhs: 16.7 },
+  { model: 'Baleno', price: 800000, price_in_Lakhs: 8.9 },
+  { model: 'XUV500', price: 1800000, price_in_Lakhs: 20 },
+  { model: 'City', price: 1200000, price_in_Lakhs: 13.3 },
+  { model: 'Nexon', price: 1100000, price_in_Lakhs: 12.2 },
+  { model: 'Venue', price: 1200000, price_in_Lakhs: 13.3 },
+  { model: 'i20', price: 900000, price_in_Lakhs: 10 },
+  { model: 'Swift', price: 750000, price_in_Lakhs: 8.3 },
+  { model: 'Harrier', price: 2000000, price_in_Lakhs: 22.2 },
+  { model: 'Amaze', price: 1000000, price_in_Lakhs: 11.1 },
+  { model: 'Nexon EV', price: 1400000, price_in_Lakhs: 15.6 },
+  { model: 'Kona Electric', price: 2300000, price_in_Lakhs: 25.6 },
+  { model: 'WagonR', price: 600000, price_in_Lakhs: 6.7 },
+  { model: 'Amaze', price: 800000, price_in_Lakhs: 8.9 }
+]
