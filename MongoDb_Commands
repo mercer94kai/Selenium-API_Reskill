@@ -117,6 +117,14 @@ $regexMatch
 $ltrim
 $split
 
+CONDITIONAL OPERATORS
+-----------------------------------
+$cond
+$ifNull
+$switch
+
+
+
 
 POINTS:
 =======
@@ -394,3 +402,94 @@ Output:
   { model: 'WagonR', price: 600000, price_in_Lakhs: 6.7 },
   { model: 'Amaze', price: 800000, price_in_Lakhs: 8.9 }
 ]
+#SUM
+--------
+Q.
+ db.cars.aggregate([ 
+	{$match:{maker:"Hyundai"}},
+	{$set:{total_service_cost:{$sum:"$service_history.cost"}}},
+	{$project:{model:1,maker:1,_id:0,total_service_cost:1}}
+	])
+Output:
+[
+  { maker: 'Hyundai', model: 'Creta', total_service_cost: 17000 },
+  { maker: 'Hyundai', model: 'Venue', total_service_cost: 12000 },
+  { maker: 'Hyundai', model: 'i20', total_service_cost: 9500 },
+  {maker: 'Hyundai',model: 'Kona Electric',total_service_cost: 8000}
+]	
+
+
+$COND & $IF
+------------------
+Q.db.cars.aggregate([ 
+    {$project:{_id:0,model:1,
+    fuelCategory:{
+        $cond:{
+            if:{$eq:["$fuel_type","Petrol"]},
+            then:"Petrol Car",
+            else:"Non-Petrol Car"
+        }}}}
+    ])
+
+Output:
+[
+  { model: 'Creta', fuelCategory: 'Non-Petrol Car' },
+  { model: 'Baleno', fuelCategory: 'Petrol Car' },
+  { model: 'XUV500', fuelCategory: 'Non-Petrol Car' },
+  { model: 'City', fuelCategory: 'Petrol Car' },
+  { model: 'Nexon', fuelCategory: 'Petrol Car' },
+  { model: 'Venue', fuelCategory: 'Petrol Car' },
+  { model: 'i20', fuelCategory: 'Petrol Car' },
+  { model: 'Swift', fuelCategory: 'Petrol Car' },
+  { model: 'Harrier', fuelCategory: 'Non-Petrol Car' },
+  { model: 'Amaze', fuelCategory: 'Non-Petrol Car' },
+  { model: 'Nexon EV', fuelCategory: 'Non-Petrol Car' },
+  { model: 'Kona Electric', fuelCategory: 'Non-Petrol Car' },
+  { model: 'WagonR', fuelCategory: 'Non-Petrol Car' },
+  { model: 'Amaze', fuelCategory: 'Non-Petrol Car' }
+]
+
+$SWITCH
+-------------
+Q.
+db.cars.aggregate([ 
+    {$project:{
+        _id:0,model:1,maker:1,
+        PriceCategory:{
+            $switch:{
+                branches:[
+                    {case:{$lte:["$price",500000]},
+                        then:"Budget"
+                    },
+                    {
+                     case:{$and:[{$gt:["$price",500000]},{$lte:["$price",1000000]}]},
+                        then:"Mid-Range"   
+                    },
+                    {
+                       case:{$gt:["$price",1000000]},
+                        then:"Premium" 
+                    }
+                ],
+                default:"Unknown"
+            }
+        }
+    }}
+    ])	
+
+Output:
+[
+  { maker: 'Hyundai', model: 'Creta', PriceCategory: 'Premium' },
+  {maker: 'Maruti Suzuki',model: 'Baleno',PriceCategory: 'Mid-Range'},
+  { maker: 'Mahindra', model: 'XUV500', PriceCategory: 'Premium' },
+  { maker: 'Honda', model: 'City', PriceCategory: 'Premium' },
+  { maker: 'Tata', model: 'Nexon', PriceCategory: 'Premium' },
+  { maker: 'Hyundai', model: 'Venue', PriceCategory: 'Premium' },
+  { maker: 'Hyundai', model: 'i20', PriceCategory: 'Mid-Range' },
+  {maker: 'Maruti Suzuki',model: 'Swift',PriceCategory: 'Mid-Range'},
+  { maker: 'Tata', model: 'Harrier', PriceCategory: 'Premium' },
+  { maker: 'Honda', model: 'Amaze', PriceCategory: 'Mid-Range' },
+  { maker: 'Tata', model: 'Nexon EV', PriceCategory: 'Premium' },
+  {maker: 'Hyundai',model: 'Kona Electric',PriceCategory: 'Premium'},
+  {maker: 'Maruti Suzuki',model: 'WagonR',PriceCategory: 'Mid-Range'},
+  { maker: 'Honda', model: 'Amaze', PriceCategory: 'Mid-Range' }
+]	
